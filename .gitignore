@@ -9,3 +9,4 @@ gatsby/.env
 sanity/node_modules
 sanity/.vscode
 sanity/sample-data
+sanity/.env
