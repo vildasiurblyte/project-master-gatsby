@@ -4,6 +4,7 @@ gatsby/public/page-data
 .vscode
 gatsby/.vscode
 gatsby/public
+gatsby/.env
 
 sanity/node_modules
 sanity/.vscode
