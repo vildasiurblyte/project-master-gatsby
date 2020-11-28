@@ -17,7 +17,7 @@ const SingleBeerStyles = styled.div`
 
 const BeersPage = ({ data }) => (
   <>
-    <h2 className="center">
+    {/*   <h2 className="center">
       We have {data.beers.nodes.length} Beers Available. Dine in Only!
     </h2>
     <BeerGridStyles>
@@ -38,18 +38,17 @@ const BeersPage = ({ data }) => (
           </SingleBeerStyles>
         );
       })}
-    </BeerGridStyles>
+    </BeerGridStyles> */}
   </>
 );
 
-export const query = graphql`
+/* export const query = graphql`
   query {
     beers: allBeer {
       nodes {
         id
         name
         price
-        image
         rating {
           average
           reviews
@@ -58,5 +57,5 @@ export const query = graphql`
     }
   }
 `;
-
+ */
 export default BeersPage;
