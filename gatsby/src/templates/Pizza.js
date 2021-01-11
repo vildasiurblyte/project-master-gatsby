@@ -1,25 +1,30 @@
 import React from 'react';
 import { graphql } from 'gatsby';
+import styled from 'styled-components';
 import Img from 'gatsby-image';
+import SEO from '../components/SEO';
 
-const PizzaGrid = `
-display: grid;
-grid-gap: 2rem;
-grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+const PizzaGrid = styled.div`
+  display: grid;
+  grid-gap: 2rem;
+  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
 `;
 
 const SinglePizzaPage = ({ data: { pizza } }) => (
-  <div>
-    <Img fluid={pizza.image.asset.fluid} />
+  <>
+    <SEO title={pizza.name} image={pizza.image?.asset?.fluid?.src} />
     <PizzaGrid>
-      <h2 className="mark">{pizza.name}</h2>
-      <ul>
-        {pizza.toppings.map((topping) => (
-          <li key={topping.id}>{topping.name}</li>
-        ))}
-      </ul>
+      <Img fluid={pizza.image.asset.fluid} />
+      <div>
+        <h2 className="mark">{pizza.name}</h2>
+        <ul>
+          {pizza.toppings.map((topping) => (
+            <li key={topping.id}>{topping.name}</li>
+          ))}
+        </ul>
+      </div>
     </PizzaGrid>
-  </div>
+  </>
 );
 
 export const query = graphql`
