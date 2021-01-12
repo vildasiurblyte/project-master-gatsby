@@ -42,7 +42,6 @@ const GlobalStyles = createGlobalStyle`
     image-rendering: -moz-crisp-edges;
     image-rendering: pixelated;
   }
-  /* Scrollbar Styles */
   body::-webkit-scrollbar {
     width: 12px;
   }
