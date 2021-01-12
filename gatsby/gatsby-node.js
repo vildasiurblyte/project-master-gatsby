@@ -1,4 +1,4 @@
-import path from 'path';
+import path, { resolve } from 'path';
 import fetch from 'isomorphic-fetch';
 
 const turnPizzasIntoPages = async ({ graphql, actions }) => {
@@ -57,7 +57,7 @@ const fetchBeersAndTurnIntoNodes = async ({
   createNodeId,
   createContentDigest,
 }) => {
-  const res = await fetch('https://sampleapis.com/beers/api/ale');
+  const res = await fetch('https://api.sampleapis.com/beers/ale');
   const beers = await res.json();
   beers.forEach((beer) => {
     const nodeMeta = {
@@ -92,6 +92,17 @@ const turnSlicemastersIntoPages = async ({ graphql, actions }) => {
       }
     }
   `);
+
+  data.slicemasters.nodes.forEach((slicemaster) => {
+    actions.createPage({
+      component: resolve('./src/templates/Slicemaster.js'),
+      path: `/slicemaster/${slicemaster.slug.current}`,
+      context: {
+        name: slicemaster.name,
+        slug: slicemaster.slug.current,
+      },
+    });
+  });
 
   const pageSize = parseInt(process.env.GATSBY_PAGE_SIZE);
   const pageCount = Math.ceil(data.slicemasters.totalCount / pageSize);
