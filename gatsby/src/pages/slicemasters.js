@@ -11,7 +11,7 @@ const SlicemasterGrid = styled.div`
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
 `;
 
-const SliceMasterStyled = styled.div`
+const SlicemasterStyled = styled.div`
   a {
     text-decoration: none;
   }
@@ -29,7 +29,7 @@ const SliceMasterStyled = styled.div`
   .description {
     background: var(--yellow);
     padding: 1rem;
-    margin: 2 rem;
+    margin: 2rem;
     margin-top: -6rem;
     z-index: 2;
     position: relative;
@@ -52,7 +52,7 @@ const SliceMastersPage = ({ data, pageContext }) => {
       />
       <SlicemasterGrid>
         {slicemasters.map((person) => (
-          <SliceMasterStyled key={person.id}>
+          <SlicemasterStyled key={person.id}>
             <Link to={`/slicemaster/${person.slug.current}`}>
               <h2>
                 <span className="mark">{person.name}</span>
@@ -60,7 +60,7 @@ const SliceMastersPage = ({ data, pageContext }) => {
             </Link>
             <Img fluid={person.image.asset.fluid} />
             <p className="description">{person.description}</p>
-          </SliceMasterStyled>
+          </SlicemasterStyled>
         ))}
       </SlicemasterGrid>
     </>
