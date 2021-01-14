@@ -2,7 +2,7 @@ import React from 'react';
 
 const Footer = () => (
   <footer>
-    <p>&copy; Slick Slices {new Date().getFullYear()}</p>
+    <p className="center">&copy; Slick Slices {new Date().getFullYear()}</p>
   </footer>
 );
 

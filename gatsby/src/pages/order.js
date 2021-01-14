@@ -1,23 +1,23 @@
-import { graphql } from 'gatsby';
 import React from 'react';
+import { graphql } from 'gatsby';
 import Img from 'gatsby-image';
 import SEO from '../components/SEO';
 import useForm from '../utils/useForm';
 import calculatePizzaPrice from '../utils/calculatePizzaPrice';
 import formatMoney from '../utils/formatMoney';
 import OrderStyles from '../styles/OrderStyles';
-import MenuItemStyles from '../styles/MenuItemStyles';
+import MenuItemStyles, { ButtonsContainer } from '../styles/MenuItemStyles';
 import usePizza from '../utils/usePizza';
 import PizzaOrder from '../components/PizzaOrder';
 import calculateOrderTotal from '../utils/calculateOrderTotal';
 
-const OrderPage = ({ data: { pizzas } }) => {
+const OrderPage = ({ data }) => {
+  const pizzas = data.pizzas.nodes;
   const { values, updateValue } = useForm({
     name: '',
     email: '',
     mapleSyrup: '',
   });
-
   const {
     order,
     addToOrder,
@@ -27,61 +27,64 @@ const OrderPage = ({ data: { pizzas } }) => {
     message,
     submitOrder,
   } = usePizza({
-    pizzas: pizzas.nodes,
+    pizzas,
     values,
   });
 
   if (message) {
     return <p>{message}</p>;
   }
-
   return (
     <>
-      <SEO title="Order pizza!" />
+      <SEO title="Order a Pizza!" />
       <OrderStyles onSubmit={submitOrder}>
         <fieldset disabled={loading}>
           <legend>Your Info</legend>
-          <label htmlFor="name">Name</label>
+          <label htmlFor="name">
+            Name
+            <input
+              type="text"
+              name="name"
+              id="name"
+              value={values.name}
+              onChange={updateValue}
+            />
+          </label>
+          <label htmlFor="email">
+            Email
+            <input
+              type="email"
+              name="email"
+              id="email"
+              value={values.email}
+              onChange={updateValue}
+            />
+          </label>
           <input
-            type="text"
-            id="name"
-            name="name"
-            value={values.name}
-            onChange={updateValue}
-          />
-          <label htmlFor="email">Email</label>
-          <input
-            type="text"
-            name="email"
-            id="email"
-            value={values.email}
-            onChange={updateValue}
-          />
-          <input
-            className="mapleSyrup"
             type="mapleSyrup"
             name="mapleSyrup"
             id="mapleSyrup"
-            value={values.email}
+            value={values.mapleSyrup}
             onChange={updateValue}
+            className="mapleSyrup"
           />
         </fieldset>
-        <fieldset className="menu" disabled={loading}>
+        <fieldset disabled={loading} className="menu">
           <legend>Menu</legend>
-          {pizzas.nodes.map((pizza) => (
+          {pizzas.map((pizza) => (
             <MenuItemStyles key={pizza.id}>
               <Img
-                alt={pizza.name}
                 width="50"
                 height="50"
                 fluid={pizza.image.asset.fluid}
+                alt={pizza.name}
               />
               <h2>{pizza.name}</h2>
-              <div>
+              <ButtonsContainer>
                 {['S', 'M', 'L'].map((size) => (
                   <button
-                    key={size}
                     type="button"
+                    key={size}
                     onClick={() =>
                       addToOrder({
                         id: pizza.id,
@@ -92,26 +95,30 @@ const OrderPage = ({ data: { pizzas } }) => {
                     {size} {formatMoney(calculatePizzaPrice(pizza.price, size))}
                   </button>
                 ))}
-              </div>
+              </ButtonsContainer>
             </MenuItemStyles>
           ))}
         </fieldset>
-        <fieldset className="order" disabled={loading}>
+        <fieldset disabled={loading} className="order">
           <legend>Order</legend>
           <PizzaOrder
             order={order}
             removeFromOrder={removeFromOrder}
-            pizzas={pizzas.nodes}
+            pizzas={pizzas}
           />
         </fieldset>
         <fieldset disabled={loading}>
           <h3>
-            Your total is{' '}
-            {formatMoney(calculateOrderTotal(order, pizzas.nodes))}
+            Your Total is {formatMoney(calculateOrderTotal(order, pizzas))}
           </h3>
-          <div>{error ? <p>Error: {error}</p> : ''}</div>
+          <div aria-live="polite" aria-atomic="true">
+            {error ? <p>Error: {error}</p> : ''}
+          </div>
           <button type="submit" disabled={loading}>
-            {loading ? 'Placing order...' : 'Order Ahead!'}
+            <span aria-live="assertive" aria-atomic="true">
+              {loading ? 'Placing Order...' : ''}
+            </span>
+            {loading ? '' : 'Order Ahead'}
           </button>
         </fieldset>
       </OrderStyles>
